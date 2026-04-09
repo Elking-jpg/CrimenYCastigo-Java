@@ -20,17 +20,14 @@ public class CasaSonia extends Escenario {
         if (!p.ahMatado) {
             sb.append("0. Hablar con Sonia sobre la miseria");
         } else {
-            // Opción 1: Lectura de Lázaro (disponible si no se leyó)
             if (!capituloLeido) {
                 sb.append("1. Pedirle que lea el capítulo de la resurrección de Lázaro\n");
             }
             
-            // Opción 2: Confesión (disponible si no se ha redimido y no tiene el hacha encima)
             if (!p.listoParaRedencion && !p.inventario.contains("Hacha")) {
                 sb.append("2. Confesar el crimen y pedir redención");
             }
             
-            // Estado visual si ya se cumplió todo
             if (capituloLeido && p.listoParaRedencion) {
                 sb.append("El Nuevo Testamento descansa sobre la mesa. Sonia te mira con una compasión que duele.");
             }

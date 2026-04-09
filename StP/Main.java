@@ -3,51 +3,60 @@ package StP;
 
 public class Main {
     public static void main(String[] args) {
-        // 1. Inicializamos la ventana y reemplazamos la consola
+        // Para la visualización
         VentanaJuego ventana = new VentanaJuego();
         
+        // Se crea la ciudad (grafo)
         Ciudad sanPetesburgo = new Ciudad();
         sanPetesburgo.generarMapa();
 
-        // Estado inicial
+        // Se crea el personaje pero lo lleno luego 
         Personaje personaje = new Personaje();
         
-        // --- Lógica de Dios ---
+        // Banderitas
         boolean flagReligiosa = true;
         boolean creeEnDios = true;
+
         while (flagReligiosa) {
             ventana.imprimir("¿Crees en Dios?\n0. Si\n1. No");
             
-            String resp = ventana.leer(); // Leemos de la ventana
+            String resp = ventana.leer(); 
             
             if (resp.equals("0") || resp.equals("1")) {
                 creeEnDios = resp.equals("0");
                 flagReligiosa = false;
-                ventana.limpiar(); // Limpiamos para iniciar el juego
+                ventana.limpiar(); 
             } else {
                 ventana.imprimir("Opción no válida, Rodion.");
             }
         }
 
+        // Relleno con los stats dependiendo de sus creencias (basada en una lógica Dostoievskiana, no creer en Dios => más propenso a creer que todo está permitodo => Mayor decisión base para cometer "pecados" y menos esperanza general)
         personaje.iniciarPersonaje(creeEnDios);
         personaje.ubicacionActual = "Habitacion"; 
 
+        // Más banderas 
         boolean jugando = true;
         boolean mundoYaActualizado = false;
         boolean flagRedencion = false;
 
 
+        // Heap donde se guardaran los aconetcimientos
         HeapAcontecimientos<String> Acontecimientos = new HeapAcontecimientos<String>();
 
+
         while (jugando) {
+            // Nodo inicial 
             Escenario lugarActual = sanPetesburgo.obtenerEscenario(personaje.ubicacionActual);
             
+            // Si no se ah actualizado el mundo y personaje ah matado => Se actualiza el Grafo, se eliminan nodos, mueren y nacen nuevas conecciones
             if(!mundoYaActualizado && personaje.ahMatado){
                 sanPetesburgo.actualizarEstadoMundo(personaje);
                 personaje.inicializarCrisis(Acontecimientos);
                 mundoYaActualizado = true;
             }
 
+            // Si ah matado y no está listo para redención, cada paso que de será una gota de sangre que caerá para su desangramiento moral inevitable 
             if (personaje.ahMatado && !personaje.listoParaRedencion) {
                 personaje.recalibrarDelirios(Acontecimientos);
                 
@@ -71,13 +80,27 @@ public class Main {
                 } 
             }
 
+            // Si está listo para la redención se modifica el grafo lo más adecuado para que solo pueda "ganar"
             if(!flagRedencion && personaje.listoParaRedencion){
                 sanPetesburgo.mundoParaRedencion(personaje);
                 flagRedencion = true;
             }
 
-
-            if(personaje.ahMatado && personaje.pasos % 5 == 0 && !personaje.listoParaRedencion){
+            /*
+                Lógica de los acontecimientos, se cocinan a fuego lento, y se van actualizando "paso" a "paso", dependen de los stats 
+                en cada "paso" del personaje, un acontecimiento sucede si o si después de que el resto de la cantidad de pasos dados 
+                dividido 6 sea 0, hay 4 posibles acontecimientos, comisaría (Teletransporte a la comisaría, si esto pasa 3 veces te atrapan)
+                teletransporte aleatoreo, Delirio (son unos nodos especiales) y suicidio, este ultimo es el más complejo de que pase por 
+                lo que creeo creer del personaje que simula el juego.
+                
+                Esta es el bazuca para un mosquito del que me refería, realmente acá se pueden usar una cantidad n de posibilidades, en este caso
+                la complejidad real ni si quiera es aprovechada por las características del heap, porque al final relleno los nodos de vuelta lo que
+                me caga la característica O(1) de extracción y actualización de prioridad, porque insert es si o si O(log(n)) por el bubbleup.
+                
+                No obstante, aunque no estoy aprovechando la capacidad real de uso en este proyecto en específico, está el potencial, para aprovecharlo de verdad
+                podría hacer algo parecido pero con una cantidad n de acontecimientos bastante más grande, lo cual quizas pase en otro proyecto, por ahora, no.
+            */
+            if(personaje.ahMatado && personaje.pasos % 6 == 0 && !personaje.listoParaRedencion){
 
                 String ActualAcontecimiento = Acontecimientos.extractMax();
 
@@ -171,6 +194,8 @@ public class Main {
 
             }
 
+
+            // Final "bueno"
             if (personaje.atrapado && !personaje.listoParaRedencion) {
                 ventana.imprimir("\nHas sido atrapado.");
                 jugando = false;
@@ -213,7 +238,7 @@ public class Main {
             }
 
             switch (accionGlobal) {
-                case 0: // MOVERSE
+                case 0: // Lógica de moverse, imprimiendo las i salidas posibles en cada nodo
                     if(!personaje.enDelirio){
                         ventana.limpiar(); 
                         ventana.imprimir("\n¿A dónde te dirigen tus pasos?");
@@ -285,7 +310,7 @@ public class Main {
                     ventana.limpiar();
                     ventana.imprimir(personaje.alma.mostrarEstadoFisico()); break;
                 
-                case 4: // ACCIONES DE ESCENARIO
+                case 4: // La interacción directa con cada nodo, toda la lógica individual está dentro de los nodos
                     ventana.limpiar();
                     String opcionesSub = lugarActual.obtenerAccionesPosibles(personaje);
                     ventana.imprimir(opcionesSub);

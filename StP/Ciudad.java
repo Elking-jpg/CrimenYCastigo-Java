@@ -29,7 +29,6 @@ public class Ciudad {
         Escenario NodoEspecial1 = new NodoEspecial1();
         Escenario NodoEspecial2 = new NodoEspecial2();
 
-        // Agregar todos al mapa
         agregarEscenario(habitacion);
         agregarEscenario(escalera);
         agregarEscenario(plaza);
