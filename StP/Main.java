@@ -219,7 +219,7 @@ public class Main {
             ventana.imprimir("3. Estado Físico");
             ventana.imprimir("4. Inspeccionar lugar");
             
-            if (personaje.inventario.contains("Caja de cigarrillos") && personaje.pasos % 5 == 0) {
+            if (personaje.inventario.contains("Caja de cigarrillos") && personaje.pasos % 4 == 0) {
                 ventana.imprimir("5. Fumar");
             }
             if (personaje.inventario.contains("Cerveza turbia")) {

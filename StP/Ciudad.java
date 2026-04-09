@@ -124,12 +124,12 @@ public class Ciudad {
             eliminarNodoDelGrafo("Plaza de San Petersburgo");
             eliminarNodoDelGrafo("Jardin Yusupov");
             eliminarNodoDelGrafo("Puente Kokushkin");
+            eliminarNodoDelGrafo("Calle Oscura");
 
             Escenario calle = Escenarios.get("Calle Oscura");
             if(calle != null) calle.salidas.clear();
 
-            conectarNodos("Calle Oscura", "Comisaria");
-            conectarNodos("Calle Oscura", "Calle Oscura");
+
             conectarNodos("Comisaria", "Malecon");
             conectarNodos("Comisaria", "Casa De Alyona Ivanovna");
             conectarNodos("Casa De Alyona Ivanovna", "Comisaria");
