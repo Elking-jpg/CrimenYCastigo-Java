@@ -131,6 +131,8 @@ public class Ciudad {
             conectarNodos("Calle Oscura", "Comisaria");
             conectarNodos("Calle Oscura", "Calle Oscura");
             conectarNodos("Comisaria", "Malecon");
+            conectarNodos("Comisaria", "Casa De Alyona Ivanovna");
+            conectarNodos("Casa De Alyona Ivanovna", "Comisaria");
             conectarNodos("Malecon", "Comisaria");
 
 
