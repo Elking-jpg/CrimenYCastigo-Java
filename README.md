@@ -2,7 +2,7 @@
 
 Este proyecto es una simulación interactiva del libro *Crimen y Castigo*, novela del autor Fiódor Dostoievski. El objetivo central fue tratar de **"encarnar" los trastornos psicológicos** del protagonista, Rodion Raskolnikov, a través de la lógica de programación.
 
-### 🧠 Arquitectura del Colapso (Lo técnico)
+### Arquitectura del Colapso (Lo técnico)
 
 Fuera del endulzamiento literario, el motor se sostiene sobre tres pilares fundamentales:
 
@@ -12,7 +12,7 @@ Fuera del endulzamiento literario, el motor se sostiene sobre tres pilares funda
 
 * **Lógica Polimórfica y Control de Stats**: Cada escenario tiene su propia implementación de acciones, permitiendo una organización limpia del proyecto. Además, se incluyó una lógica de "clamping" para asegurar que los atributos físicos y psicológicos se mantengan siempre entre **0 y 100**, evitando desbordamientos en el modelo de simulación.
 
-### 🚀 Cómo jugar
+### Cómo jugar
 
 1. Descargá el archivo `StPetesburgo.jar`.
 2. Asegurate de tener **Java 17** o superior instalado.
